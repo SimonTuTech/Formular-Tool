@@ -19,16 +19,14 @@ abstract class Forms_Controller_Element {
             return $this->delegate->validateValue($value);
         }
         else {
-            return TRUE;
+            return FALSE;
         }
     }
 
     /**
      * Writes incoming values to storage
      */
-    abstract function init() {
-        
-    }
+    abstract function init();
 
     public function setName($name) {
         $this->name = $name;

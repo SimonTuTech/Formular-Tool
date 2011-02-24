@@ -3,7 +3,7 @@
  * wird erzeugt. Dies geschieht mit Hilfe einer statischen Funktion, welche ein Objekt ihrer eigenen Klasse erzeugt. Auf dieses eine, gleichbleibende Objekt
  * kann dann immer wieder zugegriffen werden, ohne dass man jedes mal neue Instanzen mit 'new...' erzeugen muss. Dies spart Speicherplatz.
  */
-class Forms_Controller_InputElementFactory {
+class Forms_Controller_ElementFactory {
     private static $instance;
     protected $inputSource, $storage;
 
@@ -23,12 +23,12 @@ class Forms_Controller_InputElementFactory {
          * Instanz immer gleich bleibt und nicht geändert/überschrieben werden kann
          */
         if (empty (self::$instance)) {
-            self::$instance = new Forms_Controller_InputElementFactory();
+            self::$instance = new Forms_Controller_ElementFactory();
         }
         return self::$instance;
     }
 
-    public function setInputSource (Forms_Interface_Input $source) {
+    public function setInputSource (Forms_Interface_InputSource $source) {
         $this->inputSource = $source;
     }
 
@@ -49,30 +49,30 @@ class Forms_Controller_InputElementFactory {
         }
 
         $delegate = NULL;
+        //evtl $element_controller mit NULL initialisieren sicherheitshalber, falls er mal in switch nicht gesetzt wird
 
         switch ($type) {
             case self::TYPE_EMAIL:
             case self::TYPE_INPUT:
-                $element_view = new Forms_View_Input($name);
+                $element_controller = new Forms_Controller_ElementSingle($name);
+                $element = new Forms_View_Input($element_controller);
                 break;
             case self::TYPE_TEXTAREA:
-                $element_view = new Forms_View_TextArea($name);
+                $element_controller = new Forms_Controller_ElementSingle($name);
+                $element = new Forms_View_TextArea($element_controller);
                 break;
-            case self::TYPE_CHECKBOX:
-                $element_view = new Forms_View_Multiple_Checkbox($name, $options);
-                break;
+//            case self::TYPE_CHECKBOX:
+//                $element_view = new Forms_View_Multiple_Checkbox($name, $options);
+//                break;
             default:
                 throw new Exception ('Unknown element-type');
         }
         
-        //erzeugen eines neuen Formular-Elements unter Angabe des jeweiligen View-Elements und der Quelle (Post oder Get)
-        $element = new Forms_Controller_TextElement($element_view);
-        $element->setStorage($this->storage); //setzt Speicherort / -quelle
-        $element->setInputSource($this->inputSource); //setzt Datenherkunftsort, z. B. Post-Werte
-        $element->setDelegate($delegate); //setzen eines optionalen Delegate, z. B. Validator
-        $element->initValueSource(); //initiert Quelle der gesetzten Werte eines Elements: entweder aus Post oder wenn das leer aus Session
-        $element->addDesign("field-".$name);
-        $element->addDesign("type-".$type);
+        //erzeugen eines neuen Formular Elements indem man den Controller alle nötigen Funktionen ausführen lässt
+        $element_controller->setStorage($this->storage); //setzt Speicherort / -quelle
+        $element_controller->setInputSource($this->inputSource); //setzt Datenherkunftsort, z. B. Post-Werte
+        $element_controller->setDelegate($delegate); //setzen eines optionalen Delegate, z. B. Validator
+        $element_controller->init(); //Werte für Feld-Vorbelegung und evtl Multifeld-Optionen initialisieren
 
         //Rückgabe des kreierten Elements
         return $element;
