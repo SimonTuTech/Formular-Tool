@@ -10,9 +10,9 @@ class Forms_View_Input extends _Forms_View {
 
         return sprintf(
                 '<input type="text" name="%s" value="%s" class="%s%s">%s'
-                ,$this->controller->getName()
-                ,$this->controller->getValue()
-                ,"field-".$this->controller->getName()." type-input"
+                ,htmlentities($this->controller->getName(), ENT_QUOTES, 'utf-8')
+                ,htmlentities($this->controller->getValue(), ENT_QUOTES, 'utf-8')
+                ,"field-".htmlentities($this->controller->getName(), ENT_QUOTES, 'utf-8')." type-input"
                 ,$this->invalidClass
                 ,$this->invalidMessage
                );

@@ -17,12 +17,14 @@
     try {
         //setzen der Datenquelle
         $post = new Forms_Controller_InputSourcePost();
+        //erzeugen von Speicheort für Daten
+        $storage = new Forms_Controller_Storage(new Forms_Model_Session(), new Forms_Model_Definitions());
         //erzeugen einer Factory-Instanz
         $formElement = Forms_Controller_ElementFactory::getInstance();
         //setzen der Datenquelle für das konkrete Objekt
         $formElement->setInputSource($post);
         //setzen eines Speicherortes für eigegebene Daten und Multi-Element-Optionen
-        $formElement->setStorage(new Forms_Model_Session(), new Forms_Model_Definitions());
+        $formElement->setStorage($storage);
     }
     catch (Exception $e) {
         echo $e->getMessage();
@@ -44,6 +46,8 @@
                     echo "<br />";
                     echo $formElement->createElement("kommentar", Forms_Controller_ElementFactory::TYPE_TEXTAREA);
                     echo "<br />";
+                    echo $formElement->createElement("titel", Forms_Controller_ElementFactory::TYPE_CHECKBOX, array("Dr.", "Prof."));
+                    echo "<br />";
                 }
                 catch (Exception $e) {
                     echo $e->getMessage();
@@ -52,8 +56,9 @@
             <input type="submit" value=" Absenden ">
         </form>
         <?php
-            var_dump($_POST);
-            var_dump($_SESSION);
+            echo "POST: "; var_dump($_POST);
+            echo "<br />";
+            echo "SESSION: "; var_dump($_SESSION);
         ?>
     </body>
 </html>

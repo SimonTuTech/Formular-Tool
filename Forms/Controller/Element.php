@@ -19,7 +19,7 @@ abstract class Forms_Controller_Element {
             return $this->delegate->validateValue($value);
         }
         else {
-            return FALSE;
+            return TRUE;
         }
     }
 

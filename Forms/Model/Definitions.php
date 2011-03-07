@@ -8,11 +8,11 @@ class Forms_Model_Definitions implements Forms_Interface_Model  {
     protected $definitions = array();
 
     public function getValueForKey($key) {
-        return $this->definitions[$key."options"];
+        return $this->definitions[$key];
     }
 
     public function setValueForKey($key, $value) {
-        $this->definitions[$key."options"] = $value;
+        $this->definitions[$key] = $value;
     }
 }
 ?>

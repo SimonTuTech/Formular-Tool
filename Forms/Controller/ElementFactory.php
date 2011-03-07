@@ -32,7 +32,7 @@ class Forms_Controller_ElementFactory {
         $this->inputSource = $source;
     }
 
-    public function setStorage (Forms_Interface_Model $storage) {
+    public function setStorage (Forms_Controller_Storage $storage) {
         $this->storage = $storage;
     }
 
@@ -61,9 +61,10 @@ class Forms_Controller_ElementFactory {
                 $element_controller = new Forms_Controller_ElementSingle($name);
                 $element = new Forms_View_TextArea($element_controller);
                 break;
-//            case self::TYPE_CHECKBOX:
-//                $element_view = new Forms_View_Multiple_Checkbox($name, $options);
-//                break;
+            case self::TYPE_CHECKBOX:
+                $element_controller = new Forms_Controller_ElementMulti($name, $options);
+                $element = new Forms_View_Checkbox($element_controller);
+                break;
             default:
                 throw new Exception ('Unknown element-type');
         }

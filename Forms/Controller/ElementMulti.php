@@ -11,18 +11,27 @@ class Forms_Controller_ElementMulti extends Forms_Controller_Element {
         //muss Werte setzen aus Post -> über setSelected
         $incomingValues = $this->inputSource->getValueForKey($this->getName());
         if (is_array($incomingValues) && count($incomingValues) > 0 ) {
-            $this->setValue($incomingValues);
+            $this->setSelected($incomingValues);
         }
+        else {
+            $this->setSelected(array());
+        }
+
         //muss Optionen setzen, die von der Factory (oder hier direkt) reinkommen -> über setOptions
-        $this->setOptions($this->options);
+        if (count($this->options) > 0) {
+            $this->setOptions($this->options);
+        }
+        else {
+            throw new Exception ('Bei Multi-Select-Elementen muss mindestens eine Option eingegeben werden');
+        }
     }
 
     public function setOptions (array $options) {
-        $this->storage->setOptionsForKey($this->getName(), $options);
+        $this->storage->setOptionsForKey($this->getName().".options", $options);
     }
 
     public function getOptions () {
-        return $this->storage->getOptionsForKey($this->getName());
+        return $this->storage->getOptionsForKey($this->getName().".options");
     }
 
      public function setSelected ($incomingArray) {
@@ -32,7 +41,7 @@ class Forms_Controller_ElementMulti extends Forms_Controller_Element {
 
     public function is_selected ($option) {
         //vergleicht ob $option in der Session (=ausgewählte Options) steht und gibt TRUE zurück, sonst FALSE
-        if (in_array($option, $this->storage->getValueForKey($this->name))) {
+        if (in_array($option, $this->storage->getValueForKey($this->getName()))) {
             return TRUE;
         }
         else {

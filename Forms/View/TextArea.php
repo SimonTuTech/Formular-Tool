@@ -10,10 +10,10 @@ class Forms_View_TextArea extends _Forms_View {
 
         return sprintf(
                 '<textarea name="%s" class="%s%s">%s</textarea>%s'
-                ,$this->controller->getName()
-                ,"field-".$this->controller->getName()." type-input"
+                ,htmlentities($this->controller->getName(), ENT_QUOTES, 'utf-8')
+                ,"field-".htmlentities($this->controller->getName(), ENT_QUOTES, 'utf-8')." type-textarea"
                 ,$this->invalidClass
-                ,$this->controller->getValue()
+                ,htmlentities($this->controller->getValue(), ENT_QUOTES, 'utf-8')
                 ,$this->invalidMessage
                );
     }

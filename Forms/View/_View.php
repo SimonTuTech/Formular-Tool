@@ -8,7 +8,7 @@ abstract class _Forms_View {
 
     public function showValidity() {
         if ($this->controller->isValid($this->controller->getValue()) == FALSE) {
-            $this->invalidMessage = '<span class="field-'.$this->controller->getName().'-error errormessage">'.$this->errorMessage().'</span>';
+            $this->invalidMessage = '<span class="field-'.htmlentities($this->controller->getName(), ENT_QUOTES, 'utf-8').'-error errormessage">'.htmlentities($this->errorMessage(), ENT_QUOTES, 'utf-8').'</span>';
             $this->invalidClass = " invalid";
         }
         else {
