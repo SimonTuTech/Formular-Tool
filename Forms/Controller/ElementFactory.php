@@ -43,7 +43,7 @@ class Forms_Controller_ElementFactory {
      * @param array $options
      * @return Forms_Controller_TextElement
      */
-    public function createElement ($name, $type, array $options=array()) {
+    public function createElement ($name, $type, array $default=array(), array $options=array()) {
         if (empty($this->inputSource)) {
             throw new Exception ('No input-source given');
         }
@@ -54,15 +54,15 @@ class Forms_Controller_ElementFactory {
         switch ($type) {
             case self::TYPE_EMAIL:
             case self::TYPE_INPUT:
-                $element_controller = new Forms_Controller_ElementSingle($name);
+                $element_controller = new Forms_Controller_ElementSingle($name, $default);
                 $element = new Forms_View_Input($element_controller);
                 break;
             case self::TYPE_TEXTAREA:
-                $element_controller = new Forms_Controller_ElementSingle($name);
+                $element_controller = new Forms_Controller_ElementSingle($name, $default);
                 $element = new Forms_View_TextArea($element_controller);
                 break;
             case self::TYPE_CHECKBOX:
-                $element_controller = new Forms_Controller_ElementMulti($name, $options);
+                $element_controller = new Forms_Controller_ElementMulti($name, $options, $default);
                 $element = new Forms_View_Checkbox($element_controller);
                 break;
             default:

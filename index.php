@@ -42,11 +42,11 @@
             <?php
                 try {
                     //erzeugen von Formularelementen
-                    echo $formElement->createElement("name", Forms_Controller_ElementFactory::TYPE_INPUT);
+                    echo $formElement->createElement("name", Forms_Controller_ElementFactory::TYPE_INPUT, array("default"));
                     echo "<br />";
-                    echo $formElement->createElement("kommentar", Forms_Controller_ElementFactory::TYPE_TEXTAREA);
+                    echo $formElement->createElement("kommentar", Forms_Controller_ElementFactory::TYPE_TEXTAREA, array("default"));
                     echo "<br />";
-                    echo $formElement->createElement("titel", Forms_Controller_ElementFactory::TYPE_CHECKBOX, array("Dr.", "Prof."));
+                    echo $formElement->createElement("titel", Forms_Controller_ElementFactory::TYPE_CHECKBOX, array("Prof."), array("Dr.", "Prof."));
                     echo "<br />";
                 }
                 catch (Exception $e) {
@@ -59,6 +59,7 @@
             echo "POST: "; var_dump($_POST);
             echo "<br />";
             echo "SESSION: "; var_dump($_SESSION);
+//            session_destroy();
         ?>
     </body>
 </html>

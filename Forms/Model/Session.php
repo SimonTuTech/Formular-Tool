@@ -5,12 +5,7 @@ class Forms_Model_Session implements Forms_Interface_Model {
     }
 
     public function getValueForKey ($key) {
-        if (isset ($_SESSION[$key])) {
-            return $_SESSION[$key];
-        }
-        else {
-            return NULL;
-        }
+        return isset($_SESSION[$key]) ? $_SESSION[$key] : NULL;
     }
 
     public function setValueForKey ($key, $value) {

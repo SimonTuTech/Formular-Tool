@@ -1,6 +1,6 @@
 <?php
 abstract class Forms_Controller_Element {
-    protected $name, $inputSource, $storage, $delegate;
+    protected $name, $inputSource, $storage, $delegate, $default;
 
     public function setInputSource (Forms_Interface_InputSource $source) {
         $this->inputSource = $source;
@@ -34,6 +34,20 @@ abstract class Forms_Controller_Element {
 
     public function getName() {
         return $this->name;
+    }
+
+    public function setDefault (array $default) {
+        $this->storage->setOptionsForKey($this->getName()."default", $default);
+    }
+
+    //gibt default-Werte nur aus, wenn Post und Session noch nicht gesetzt sind
+    public function getDefault () {
+        if ($this->inputSource->getValueForKey($this->getName()) === NULL && $this->storage->getValueForKey($this->getName()) === NULL) {
+            return $this->storage->getOptionsForKey($this->getName()."default");
+        }
+        else {
+            return NULL;
+        }
     }
 }
 
